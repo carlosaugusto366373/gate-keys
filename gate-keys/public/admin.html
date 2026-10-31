@@ -83,11 +83,18 @@
   <div class="box">
     <h2>📝 Geral</h2>
     <label>Título da página</label>
-    <input id="titulo" placeholder="🔑 Resgatar Key">
+    <input id="titulo" placeholder="⬇️ Download">
     <label>Subtítulo</label>
     <input id="subtitulo" placeholder="Complete as etapas na ordem...">
     <label>Mensagem final (depois de completar)</label>
-    <input id="mensagemFinal" placeholder="✅ Tudo certo! Clique para resgatar.">
+    <input id="mensagemFinal" placeholder="✅ Tudo certo! Clique para baixar.">
+  </div>
+
+  <div class="box">
+    <h2>⬇️ Download</h2>
+    <label>Link do arquivo para download</label>
+    <input id="downloadUrl" placeholder="https://seusite.com/arquivo.zip">
+    <small>Quando o usuário completar todas as etapas, esse link será aberto.</small>
   </div>
 
   <div class="box">
@@ -96,12 +103,6 @@
     <div class="actions">
       <button onclick="adicionarEtapa()" class="ghost">➕ Adicionar etapa</button>
     </div>
-  </div>
-
-  <div class="box">
-    <h2>🔑 Keys (uma por linha)</h2>
-    <textarea id="keys" placeholder="A1B2-C3D4-E5F6-G7H8&#10;H8G7-F6E5-D4C3-B2A1"></textarea>
-    <small>Uma key por linha. O sistema sorteia uma aleatória a cada resgate.</small>
   </div>
 
   <button onclick="salvar()" style="width:100%; padding:14px; font-size:15px;">💾 Salvar tudo</button>
@@ -161,7 +162,7 @@
     document.getElementById('titulo').value = config.titulo || '';
     document.getElementById('subtitulo').value = config.subtitulo || '';
     document.getElementById('mensagemFinal').value = config.mensagemFinal || '';
-    document.getElementById('keys').value = (config.keys || []).join('\n');
+    document.getElementById('downloadUrl').value = config.downloadUrl || '';
     renderEtapas();
   }
 
@@ -210,8 +211,7 @@
     config.titulo = document.getElementById('titulo').value;
     config.subtitulo = document.getElementById('subtitulo').value;
     config.mensagemFinal = document.getElementById('mensagemFinal').value;
-    config.keys = document.getElementById('keys').value
-      .split('\n').map(k => k.trim()).filter(Boolean);
+    config.downloadUrl = document.getElementById('downloadUrl').value;
 
     try {
       const res = await fetch('/api/config', {
