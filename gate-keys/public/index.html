@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resgatar Key</title>
+<title>Download</title>
 <style>
   * { box-sizing: border-box; font-family: system-ui, sans-serif; }
   body {
@@ -42,20 +42,6 @@
   }
   .btn:disabled { background: #2a2a35; color: #666; cursor: not-allowed; }
   .btn:not(:disabled):hover { background: #2563eb; }
-  #keyBox {
-    margin-top: 16px; padding: 16px; border-radius: 12px;
-    background: #10261a; border: 1px solid #1f6b3d;
-    text-align: center; display: none;
-  }
-  #keyBox code {
-    display: block; font-size: 18px; letter-spacing: 2px;
-    margin: 10px 0; color: #4ade80; word-break: break-all;
-    font-family: monospace;
-  }
-  .copy {
-    background: #22c55e; color: #000; border: none; padding: 8px 16px;
-    border-radius: 8px; font-weight: 700; cursor: pointer;
-  }
   .prog { color: #60a5fa; font-weight: 700; }
   .loading { text-align: center; color: #666; padding: 40px 0; }
 </style>
@@ -71,13 +57,7 @@
 
     <div id="etapasBox"></div>
 
-    <button class="btn" id="btnKey" disabled>🔒 Complete as etapas acima</button>
-
-    <div id="keyBox">
-      <div>Sua key:</div>
-      <code id="keyTxt">XXXX-XXXX-XXXX-XXXX</code>
-      <button class="copy" onclick="copiarKey(event)">Copiar</button>
-    </div>
+    <button class="btn" id="btnDownload" disabled>🔒 Complete as etapas acima</button>
   </div>
 </div>
 
@@ -133,31 +113,20 @@
     if (next) next.classList.remove('locked');
 
     if (currentStep > TOTAL) {
-      const btn = document.getElementById('btnKey');
+      const btn = document.getElementById('btnDownload');
       btn.disabled = false;
-      btn.textContent = config.mensagemFinal || '🎁 Resgatar minha key';
+      btn.textContent = config.mensagemFinal || '⬇️ Baixar agora';
     }
   }
 
-  document.getElementById('btnKey').addEventListener('click', () => {
-    const keys = config.keys && config.keys.length
-      ? config.keys
-      : ['SEM-KEYS-CADASTRADAS'];
-    const key = keys[Math.floor(Math.random() * keys.length)];
-    document.getElementById('keyTxt').textContent = key;
-    document.getElementById('keyBox').style.display = 'block';
+  document.getElementById('btnDownload').addEventListener('click', () => {
+    const url = config.downloadUrl || config.linkDownload || '#';
+    window.location.href = url;
 
-    const btn = document.getElementById('btnKey');
+    const btn = document.getElementById('btnDownload');
     btn.disabled = true;
-    btn.textContent = '✅ Key liberada';
+    btn.textContent = '✅ Download iniciado';
   });
-
-  function copiarKey(e) {
-    const txt = document.getElementById('keyTxt').textContent;
-    navigator.clipboard.writeText(txt);
-    e.target.textContent = 'Copiado!';
-    setTimeout(() => e.target.textContent = 'Copiar', 1500);
-  }
 
   carregar();
 </script>
